@@ -1,3 +1,27 @@
+@REM
+@REM ***************************************************************************
+@REM Copyright (c) 2010 Qcadoo Limited
+@REM Project: Qcadoo Framework
+@REM Version: 0.4.1
+@REM
+@REM This file is part of Qcadoo.
+@REM
+@REM Qcadoo is free software; you can redistribute it and/or modify
+@REM it under the terms of the GNU Affero General Public License as published
+@REM by the Free Software Foundation; either version 3 of the License,
+@REM or (at your option) any later version.
+@REM
+@REM This program is distributed in the hope that it will be useful,
+@REM but WITHOUT ANY WARRANTY; without even the implied warranty
+@REM of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+@REM See the GNU Affero General Public License for more details.
+@REM
+@REM You should have received a copy of the GNU Affero General Public License
+@REM along with this program; if not, write to the Free Software
+@REM Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+@REM ***************************************************************************
+@REM
+
 @echo off
 rem Licensed to the Apache Software Foundation (ASF) under one or more
 rem contributor license agreements.  See the NOTICE file distributed with
