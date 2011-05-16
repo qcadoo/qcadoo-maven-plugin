@@ -5,7 +5,7 @@
 
 	<groupId>com.qcadoo</groupId>
 	<artifactId>qcadoo-maven-plugin</artifactId>
-	<version>0.4.0-SNAPSHOT</version>	
+	<version>0.4.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Qcadoo Framework :: Maven Plugin</name>
@@ -79,8 +79,8 @@
 			<version>1.1</version>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -98,10 +98,6 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.0-beta-9</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -130,7 +126,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>	
+			</plugin>
 		</plugins>
 	</build>
 
@@ -160,7 +156,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<distributionManagement>
 		<repository>
 			<id>qcadoo-releases-repository</id>
@@ -178,9 +174,9 @@
 	</distributionManagement>
 
 	<scm>
- 		<connection>scm:git:git://github.com/qcadoo/qcadoo-maven-plugin.git</connection>
-  		<developerConnection>scm:git:ssh://git@github.com/qcadoo/qcadoo-maven-plugin.git</developerConnection>
-  		<url>https://github.com/qcadoo/qcadoo-maven-plugin</url>
+		<connection>scm:git:git://github.com/qcadoo/qcadoo-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:qcadoo/qcadoo-maven-plugin.git</developerConnection>
+		<url>https://github.com/qcadoo/qcadoo-maven-plugin</url>
 	</scm>
 
 </project>
