@@ -175,7 +175,7 @@
 
 	<scm>
 		<connection>scm:git:ssh://github.com/qcadoo/qcadoo-maven-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/qcadoo/qcadoo-maven-plugin.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:qcadoo/qcadoo-maven-plugin.git</developerConnection>
 		<url>http://github.com/qcadoo/qcadoo-maven-plugin</url>
 	</scm>
 
