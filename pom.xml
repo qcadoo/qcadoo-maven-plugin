@@ -108,7 +108,7 @@
 				<version>2.1.2</version>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
+						<id>deploy-sources</id>
 						<phase>deploy</phase>
 						<goals>
 							<goal>jar-no-fork</goal>
@@ -122,7 +122,7 @@
 				<version>2.5</version>
 				<executions>
 					<execution>
-						<id>deploy</id>
+						<id>deploy-javadocs</id>
 						<phase>deploy</phase>
 						<goals>
 							<goal>deploy</goal>
