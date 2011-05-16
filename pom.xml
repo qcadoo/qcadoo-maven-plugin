@@ -9,6 +9,24 @@
 
 	<name>Qcadoo Framework :: Maven Plugin</name>
 
+	<description />
+
+	<url>https://github.com/qcadoo/qcadoo-maven-plugin</url>
+
+	<organization>
+		<name>Qcadoo Limited</name>
+		<url>http://www.qcadoo.com/</url>
+	</organization>
+
+	<inceptionYear>2010</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License</name>
+			<url>https://github.com/qcadoo/qcadoo/raw/master/licence.txt</url>
+		</license>
+	</licenses>
+
 	<properties>
 		<spring.version>3.1.0.M1</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -129,6 +147,27 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<header>licence.txt</header>
+					<strictCheck>true</strictCheck>
+					<aggregate>true</aggregate>
+					<keywords>
+						<keyword>copyright</keyword>
+						<keyword>qcadoo</keyword>
+					</keywords>
+					<includes>
+						<include>src/**</include>
+					</includes>
+					<excludes>
+						<exclude>**/lib/**</exclude>
+						<exclude>src/main/resource/tomcat/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
