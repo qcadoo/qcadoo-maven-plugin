@@ -209,18 +209,6 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>spring-repository</id>
-			<url>http://maven.alfresco.com/nexus/content/repositories/public/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
