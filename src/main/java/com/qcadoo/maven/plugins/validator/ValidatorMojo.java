@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  * 
  * @author mady
  * @goal validate
- * @phase validate
+ * @phase process-classes
  */
 public class ValidatorMojo extends AbstractMojo {
 
@@ -65,7 +65,7 @@ public class ValidatorMojo extends AbstractMojo {
     private String javaSourcePath;
 
     /**
-     * @parameter expression="${validate.viewXmlPath}" default-value="/src/main/resources/"
+     * @parameter expression="${validate.viewXmlPath}" default-value="/target/classes/"
      * @required
      * @readonly
      */
