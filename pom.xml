@@ -4,7 +4,7 @@
 
 	<groupId>com.qcadoo</groupId>
 	<artifactId>qcadoo-maven-plugin</artifactId>
-	<version>0.4.2-SNAPSHOT</version>
+	<version>0.4.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Qcadoo Framework :: Maven Plugin</name>
@@ -32,6 +32,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<sonar.host.url>http://192.168.0.4/sonar</sonar.host.url>
+		<sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
 	</properties>
 
 	<dependencies>
@@ -235,7 +236,7 @@
 
 	<scm>
 		<connection>scm:git:git://github.com/qcadoo/qcadoo-maven-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/qcadoo/qcadoo-maven-plugin.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com/qcadoo/qcadoo-maven-plugin.git</developerConnection> 
 		<url>https://github.com/qcadoo/qcadoo-maven-plugin</url>
 	</scm>
 
