@@ -106,6 +106,13 @@ public class TomcatMojo extends AbstractMojo {
 
 	/**
 	 * @parameter expression=
+	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT/WEB-INF/lib/"
+	 * @readonly
+	 */
+	private File webappLibDirectory;
+	
+	/**
+	 * @parameter expression=
 	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
 	 * @readonly
 	 */
@@ -232,7 +239,7 @@ public class TomcatMojo extends AbstractMojo {
 	private boolean isSaasTomcatDeployApplicationProfileActive() {
 		boolean tomcat = false;
 		boolean saas = false;
-		boolean deployApplication = true;
+		boolean deployApplication = false;
 		
 		for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
 			if ("tomcat".equals(profile.getId())) {
@@ -325,12 +332,17 @@ public class TomcatMojo extends AbstractMojo {
 			throws ArtifactResolutionException, ArtifactNotFoundException,
 			IOException {
 		if (isSaasTomcatDeployApplicationProfileActive()) {
-			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0",
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0",
 					"jar");
-			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0",
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0",
 					"jar");
-			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0",
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0",
 					"jar");
+			
+			getLog().info(">>>>>> VERSION: " + project.getVersion());
+			
+			copyDependency(webappDirectory, "com.qcadoo.saas", "qcadoo-saas-webapp", project.getVersion(),
+			"war", "qcadoo-saas-webapp.war");
 		}
 	}
 
