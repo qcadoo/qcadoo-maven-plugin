@@ -228,6 +228,24 @@ public class TomcatMojo extends AbstractMojo {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	private boolean isSaasTomcatDeployApplicationProfileActive() {
+		boolean tomcat = false;
+		boolean saas = false;
+		boolean deployApplication = true;
+		
+		for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
+			if ("tomcat".equals(profile.getId())) {
+				tomcat = true;
+			} else if ("saas".equals(profile.getId())) {
+				saas = true;
+			} else if ("deployApplication".equals(profile.getId())) {
+				deployApplication = true;
+			}
+		}
+		return tomcat && saas && deployApplication;
+	}
+	
 	private void registerArtifact() {
 		project.getArtifact().setFile(target);
 	}
@@ -299,6 +317,21 @@ public class TomcatMojo extends AbstractMojo {
 				"jar");
 		copyDependency(libDirectory, "org.apache.tomcat", "dbcp", "6.0.29",
 				"jar");
+
+		addCommercialPluginsIfSaasDemo();
+	}
+
+	private void addCommercialPluginsIfSaasDemo()
+			throws ArtifactResolutionException, ArtifactNotFoundException,
+			IOException {
+		if (isSaasTomcatDeployApplicationProfileActive()) {
+			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0",
+					"jar");
+			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0",
+					"jar");
+			copyDependency(libDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0",
+					"jar");
+		}
 	}
 
 	private void copyClassPathResources() throws IOException {
