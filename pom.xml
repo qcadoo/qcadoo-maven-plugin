@@ -202,6 +202,10 @@
 				<updatePolicy>interval:5</updatePolicy>
 			</snapshots>
 		</repository>
+		<repository>
+                        <id>SpringSource Enterprise Bundle Repository Ð External Bundle Milestones</id>
+                        <url>http://maven.springframework.org/milestone</url>
+                </repository>
 	</repositories>
 
 	<distributionManagement>
