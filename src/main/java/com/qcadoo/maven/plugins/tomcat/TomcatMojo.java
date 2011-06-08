@@ -92,7 +92,7 @@ public class TomcatMojo extends AbstractMojo {
 
 	/**
 	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/"
+	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
 	 * @readonly
 	 */
 	private File webappDirectory;
