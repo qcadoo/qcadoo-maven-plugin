@@ -106,6 +106,13 @@ public class TomcatMojo extends AbstractMojo {
 
 	/**
 	 * @parameter expression=
+	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT/WEB-INF/lib/"
+	 * @readonly
+	 */
+	private File webappLibDirectory;
+	
+	/**
+	 * @parameter expression=
 	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
 	 * @readonly
 	 */
@@ -228,6 +235,24 @@ public class TomcatMojo extends AbstractMojo {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	private boolean isSaasTomcatDeployApplicationProfileActive() {
+		boolean tomcat = false;
+		boolean saas = false;
+		boolean deployApplication = false;
+		
+		for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
+			if ("tomcat".equals(profile.getId())) {
+				tomcat = true;
+			} else if ("saas".equals(profile.getId())) {
+				saas = true;
+			} else if ("deployApplication".equals(profile.getId())) {
+				deployApplication = true;
+			}
+		}
+		return tomcat && saas && deployApplication;
+	}
+	
 	private void registerArtifact() {
 		project.getArtifact().setFile(target);
 	}
@@ -299,6 +324,26 @@ public class TomcatMojo extends AbstractMojo {
 				"jar");
 		copyDependency(libDirectory, "org.apache.tomcat", "dbcp", "6.0.29",
 				"jar");
+
+		addCommercialPluginsIfSaasDemo();
+	}
+
+	private void addCommercialPluginsIfSaasDemo()
+			throws ArtifactResolutionException, ArtifactNotFoundException,
+			IOException {
+		if (isSaasTomcatDeployApplicationProfileActive()) {
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0",
+					"jar");
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0",
+					"jar");
+			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0",
+					"jar");
+			
+			getLog().info(">>>>>> VERSION: " + project.getVersion());
+			
+			copyDependency(webappDirectory, "com.qcadoo.saas", "qcadoo-saas-webapp", project.getVersion(),
+			"war", "qcadoo-saas-webapp.war");
+		}
 	}
 
 	private void copyClassPathResources() throws IOException {
