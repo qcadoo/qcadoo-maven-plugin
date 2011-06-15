@@ -2,7 +2,7 @@
  * ***************************************************************************
  * Copyright (c) 2010 Qcadoo Limited
  * Project: Qcadoo Framework
- * Version: 0.4.1
+ * Version: 0.4.2
  *
  * This file is part of Qcadoo.
  *
@@ -56,369 +56,328 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class TomcatMojo extends AbstractMojo {
 
-	/**
-	 * @component
-	 */
-	private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+    /**
+     * @component
+     */
+    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
 
-	/**
-	 * @component
-	 */
-	private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
+    /**
+     * @component
+     */
+    private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
 
-	/**
-	 * @parameter default-value="${localRepository}"
-	 */
-	private org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+    /**
+     * @parameter default-value="${localRepository}"
+     */
+    private org.apache.maven.artifact.repository.ArtifactRepository localRepository;
 
-	/**
-	 * @parameter default-value="${project.remoteArtifactRepositories}"
-	 */
-	@SuppressWarnings("rawtypes")
-	private java.util.List remoteRepositories;
+    /**
+     * @parameter default-value="${project.remoteArtifactRepositories}"
+     */
+    @SuppressWarnings("rawtypes")
+    private java.util.List remoteRepositories;
 
-	/**
-	 * @parameter expression="${basedir}/target/tomcat-archiver/"
-	 * @readonly
-	 */
-	private File workingDirectory;
+    /**
+     * @parameter expression="${basedir}/target/tomcat-archiver/"
+     * @readonly
+     */
+    private File workingDirectory;
 
-	/**
-	 * @parameter 
-	 *            expression="${basedir}/target/tomcat-archiver/${project.artifactId}"
-	 * @readonly
-	 */
-	private File rootDirectory;
+    /**
+     * @parameter expression="${basedir}/target/tomcat-archiver/${project.artifactId}"
+     * @readonly
+     */
+    private File rootDirectory;
 
-	/**
-	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
-	 * @readonly
-	 */
-	private File webappDirectory;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps"
+     * @readonly
+     */
+    private File rootWebappDirectory;
 
-	/**
-	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/lib/"
-	 * @readonly
-	 */
-	private File libDirectory;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
+     * @readonly
+     */
+    private File webappDirectory;
 
-	/**
-	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT/WEB-INF/lib/"
-	 * @readonly
-	 */
-	private File webappLibDirectory;
-	
-	/**
-	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
-	 * @readonly
-	 */
-	private File binDirectory;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/lib/"
+     * @readonly
+     */
+    private File libDirectory;
 
-	/**
-	 * @parameter expression=
-	 *            "${basedir}/target/tomcat-archiver/${project.artifactId}/qcadoo/"
-	 * @readonly
-	 */
-	private File configurationDirectory;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT/WEB-INF/lib/"
+     * @readonly
+     */
+    private File webappLibDirectory;
 
-	/**
-	 * @parameter expression="${tomcat.target}"
-	 *            default-value="${basedir}/target/${project.artifactId}.zip"
-	 * @readonly
-	 */
-	private File target;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
+     * @readonly
+     */
+    private File binDirectory;
 
-	/**
-	 * @parameter expression="${tomcat.source}" expression=
-	 *            "${basedir}/target/${project.artifactId}-${project.version}.war"
-	 * @readonly
-	 */
-	private File source;
+    /**
+     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/qcadoo/"
+     * @readonly
+     */
+    private File configurationDirectory;
 
-	/**
-	 * @parameter
-	 * @required
-	 */
-	private File configuration;
+    /**
+     * @parameter expression="${tomcat.target}" default-value="${basedir}/target/${project.artifactId}.zip"
+     * @readonly
+     */
+    private File target;
 
-	/**
-	 * @parameter
-	 * @required
-	 */
-	private File jdbcDriver;
+    /**
+     * @parameter expression="${tomcat.source}" expression= "${basedir}/target/${project.artifactId}-${project.version}.war"
+     * @readonly
+     */
+    private File source;
 
-	/**
-	 * @parameter expression="${project}"
-	 * @readonly
-	 */
-	private MavenProject project;
+    /**
+     * @parameter
+     * @required
+     */
+    private File configuration;
 
-	/**
-	 * @component
-	 */
-	private ArchiverManager archiverManager;
+    /**
+     * @parameter
+     * @required
+     */
+    private File jdbcDriver;
 
-	/**
-	 * @component role="org.codehaus.plexus.archiver.Archiver" roleHint="zip"
-	 */
-	private ZipArchiver zipArchiver;
+    /**
+     * @parameter expression="${project}"
+     * @readonly
+     */
+    private MavenProject project;
 
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		try {
-			prepareWorkingDirectory();
-			copyClassPathResources();
+    /**
+     * @component
+     */
+    private ArchiverManager archiverManager;
 
-			if (isSaasProfileActive()) {
-				updateSetenvShForSaas();
-				updateSetenvBatForSaas();
-			}
+    /**
+     * @component role="org.codehaus.plexus.archiver.Archiver" roleHint="zip"
+     */
+    private ZipArchiver zipArchiver;
 
-			unpackWar();
-			copyConfiguration();
-			copyJdbcDriver();
-			copyDependencies();
-			createArchive();
-			registerArtifact();
-		} catch (ArchiverException e) {
-			throw new MojoExecutionException("Exception while creating zip", e);
-		} catch (ArtifactResolutionException e) {
-			throw new MojoExecutionException(
-					"Exception while copying dependencies", e);
-		} catch (ArtifactNotFoundException e) {
-			throw new MojoExecutionException(
-					"Exception while copying dependencies", e);
-		} catch (ArchiveExpansionException e) {
-			throw new MojoExecutionException("Exception while unpaking war", e);
-		} catch (NoSuchArchiverException e) {
-			throw new MojoExecutionException("Exception while unpaking war", e);
-		} catch (IOException e) {
-			throw new MojoExecutionException("Exception while creating zip", e);
-		}
-	}
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        try {
+            prepareWorkingDirectory();
+            copyClassPathResources();
 
-	private void updateSetenvBatForSaas() throws IOException {
-		BufferedWriter writer = null;
+            if (isSaasProfileActive()) {
+                updateSetenvShForSaas();
+                updateSetenvBatForSaas();
+            }
 
-		try {
-			writer = new BufferedWriter(new FileWriter(new File(rootDirectory,
-					"bin/setenv.bat"), true));
-			writer.append("set \"JAVA_OPTS=%JAVA_OPTS% -Dspring.profiles.active=saas\"\n");
-		} finally {
-			IOUtils.closeQuietly(writer);
-		}
-	}
+            unpackWar();
+            copyConfiguration();
+            copyJdbcDriver();
+            copyDependencies();
+            createArchive();
+            registerArtifact();
+        } catch (ArchiverException e) {
+            throw new MojoExecutionException("Exception while creating zip", e);
+        } catch (ArtifactResolutionException e) {
+            throw new MojoExecutionException("Exception while copying dependencies", e);
+        } catch (ArtifactNotFoundException e) {
+            throw new MojoExecutionException("Exception while copying dependencies", e);
+        } catch (ArchiveExpansionException e) {
+            throw new MojoExecutionException("Exception while unpaking war", e);
+        } catch (NoSuchArchiverException e) {
+            throw new MojoExecutionException("Exception while unpaking war", e);
+        } catch (IOException e) {
+            throw new MojoExecutionException("Exception while creating zip", e);
+        }
+    }
 
-	private void updateSetenvShForSaas() throws IOException {
-		BufferedWriter writer = null;
+    private void updateSetenvBatForSaas() throws IOException {
+        BufferedWriter writer = null;
 
-		try {
-			writer = new BufferedWriter(new FileWriter(new File(rootDirectory,
-					"bin/setenv.sh"), true));
-			writer.append("JAVA_OPTS=\"$JAVA_OPTS -Dspring.profiles.active=saas\"\n");
-		} finally {
-			IOUtils.closeQuietly(writer);
-		}
-	}
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(rootDirectory, "bin/setenv.bat"), true));
+            writer.append("set \"JAVA_OPTS=%JAVA_OPTS% -Dspring.profiles.active=saas\"\n");
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	private boolean isSaasProfileActive() {
-		for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
-			if ("saas".equals(profile.getId())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    private void updateSetenvShForSaas() throws IOException {
+        BufferedWriter writer = null;
 
-	@SuppressWarnings("unchecked")
-	private boolean isSaasTomcatDeployApplicationProfileActive() {
-		boolean tomcat = false;
-		boolean saas = false;
-		boolean deployApplication = false;
-		
-		for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
-			if ("tomcat".equals(profile.getId())) {
-				tomcat = true;
-			} else if ("saas".equals(profile.getId())) {
-				saas = true;
-			} else if ("deployApplication".equals(profile.getId())) {
-				deployApplication = true;
-			}
-		}
-		return tomcat && saas && deployApplication;
-	}
-	
-	private void registerArtifact() {
-		project.getArtifact().setFile(target);
-	}
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(rootDirectory, "bin/setenv.sh"), true));
+            writer.append("JAVA_OPTS=\"$JAVA_OPTS -Dspring.profiles.active=saas\"\n");
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+    }
 
-	private void createArchive() throws ArchiverException, IOException {
-		zipArchiver.setDestFile(target);
-		zipArchiver.setDirectoryMode(493);
-		zipArchiver.setFileMode(420);
+    @SuppressWarnings("unchecked")
+    private boolean isSaasProfileActive() {
+        for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
+            if ("saas".equals(profile.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-		DefaultFileSet fileSet = new DefaultFileSet();
-		fileSet.setDirectory(workingDirectory);
-		fileSet.setIncludingEmptyDirectories(true);
-		fileSet.setExcludes(new String[] { "**/*.sh", "**/*.bat" });
+    @SuppressWarnings("unchecked")
+    private boolean isSaasTomcatDeployApplicationProfileActive() {
+        boolean tomcat = false;
+        boolean saas = false;
+        boolean deployApplication = false;
 
-		zipArchiver.addFileSet(fileSet);
-		zipArchiver.setFileMode(492);
+        for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
+            if ("tomcat".equals(profile.getId())) {
+                tomcat = true;
+            } else if ("saas".equals(profile.getId())) {
+                saas = true;
+            } else if ("deployApplication".equals(profile.getId())) {
+                deployApplication = true;
+            }
+        }
+        return tomcat && saas && deployApplication;
+    }
 
-		DefaultFileSet executableFileSet = new DefaultFileSet();
-		executableFileSet.setDirectory(workingDirectory);
-		executableFileSet.setIncludingEmptyDirectories(true);
-		executableFileSet.setIncludes(new String[] { "**/*.sh", "**/*.bat" });
+    private void registerArtifact() {
+        project.getArtifact().setFile(target);
+    }
 
-		zipArchiver.addFileSet(executableFileSet);
-		zipArchiver.createArchive();
-	}
+    private void createArchive() throws ArchiverException, IOException {
+        zipArchiver.setDestFile(target);
+        zipArchiver.setDirectoryMode(493);
+        zipArchiver.setFileMode(420);
 
-	private void unpackWar() throws IOException, ArchiveExpansionException,
-			NoSuchArchiverException {
-		AssemblyFileUtils.unpack(source, webappDirectory, archiverManager);
-	}
+        DefaultFileSet fileSet = new DefaultFileSet();
+        fileSet.setDirectory(workingDirectory);
+        fileSet.setIncludingEmptyDirectories(true);
+        fileSet.setExcludes(new String[] { "**/*.sh", "**/*.bat" });
 
-	private void copyJdbcDriver() throws IOException {
-		FileUtils.copyFileToDirectory(jdbcDriver, libDirectory);
-	}
+        zipArchiver.addFileSet(fileSet);
+        zipArchiver.setFileMode(492);
 
-	private void copyConfiguration() throws IOException {
-		FileUtils.copyDirectory(configuration, configurationDirectory);
-	}
+        DefaultFileSet executableFileSet = new DefaultFileSet();
+        executableFileSet.setDirectory(workingDirectory);
+        executableFileSet.setIncludingEmptyDirectories(true);
+        executableFileSet.setIncludes(new String[] { "**/*.sh", "**/*.bat" });
 
-	private void copyDependencies() throws ArtifactResolutionException,
-			ArtifactNotFoundException, IOException {
-		copyDependency(binDirectory, "commons-daemon", "commons-daemon",
-				"1.0.3", "jar", "commons-daemon.jar");
-		copyDependency(binDirectory, "org.apache.tomcat", "juli", "6.0.29",
-				"jar", "tomcat-juli.jar");
-		copyDependency(binDirectory, "org.apache.tomcat", "bootstrap",
-				"6.0.29", "jar", "bootstrap.jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "annotations-api",
-				"6.0.29", "jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "catalina", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "tribes", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "catalina-ha",
-				"6.0.29", "jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "el-api", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "jasper-jdt",
-				"6.0.29", "jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "jasper-el",
-				"6.0.29", "jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "jasper", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "jsp-api", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "servlet-api",
-				"6.0.29", "jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "coyote", "6.0.29",
-				"jar");
-		copyDependency(libDirectory, "org.apache.tomcat", "dbcp", "6.0.29",
-				"jar");
+        zipArchiver.addFileSet(executableFileSet);
+        zipArchiver.createArchive();
+    }
 
-		addCommercialPluginsIfSaasDemo();
-	}
+    private void unpackWar() throws IOException, ArchiveExpansionException, NoSuchArchiverException {
+        AssemblyFileUtils.unpack(source, webappDirectory, archiverManager);
+    }
 
-	private void addCommercialPluginsIfSaasDemo()
-			throws ArtifactResolutionException, ArtifactNotFoundException,
-			IOException {
-		if (isSaasTomcatDeployApplicationProfileActive()) {
-			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0",
-					"jar");
-			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0",
-					"jar");
-			copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0",
-					"jar");
-			
-			getLog().info(">>>>>> VERSION: " + project.getVersion());
-			
-			copyDependency(webappDirectory, "com.qcadoo.saas", "qcadoo-saas-webapp", project.getVersion(),
-			"war", "qcadoo-saas-webapp.war");
-		}
-	}
+    private void copyJdbcDriver() throws IOException {
+        FileUtils.copyFileToDirectory(jdbcDriver, libDirectory);
+    }
 
-	private void copyClassPathResources() throws IOException {
-		copyClassPathResource("LICENSE");
-		copyClassPathResource("bin/callRestart.bat");
-		copyClassPathResource("bin/catalina-tasks.xml");
-		copyClassPathResource("bin/catalina.sh");
-		copyClassPathResource("bin/catalina.bat");
-		copyClassPathResource("bin/cpappend.bat");
-		copyClassPathResource("bin/digest.bat");
-		copyClassPathResource("bin/digest.sh");
-		copyClassPathResource("bin/restart.bat");
-		copyClassPathResource("bin/restart.sh");
-		copyClassPathResource("bin/setclasspath.bat");
-		copyClassPathResource("bin/setclasspath.sh");
-		copyClassPathResource("bin/setenv.bat");
-		copyClassPathResource("bin/setenv.sh");
-		copyClassPathResource("bin/shutdown.bat");
-		copyClassPathResource("bin/shutdown.sh");
-		copyClassPathResource("bin/startup.bat");
-		copyClassPathResource("bin/startup.sh");
-		copyClassPathResource("bin/tool-wrapper.bat");
-		copyClassPathResource("bin/tool-wrapper.sh");
-		copyClassPathResource("bin/version.bat");
-		copyClassPathResource("bin/version.sh");
-		copyClassPathResource("conf/catalina.policy");
-		copyClassPathResource("conf/catalina.properties");
-		copyClassPathResource("conf/context.xml");
-		copyClassPathResource("conf/logging.properties");
-		copyClassPathResource("conf/server.xml");
-		copyClassPathResource("conf/tomcat-users.xml");
-		copyClassPathResource("conf/web.xml");
-		copyClassPathResource("logs/IGNOREME");
-		copyClassPathResource("temp/IGNOREME");
-		copyClassPathResource("work/IGNOREME");
-	}
+    private void copyConfiguration() throws IOException {
+        FileUtils.copyDirectory(configuration, configurationDirectory);
+    }
 
-	private void prepareWorkingDirectory() throws IOException {
-		FileUtils.forceMkdir(workingDirectory);
+    private void copyDependencies() throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
+        copyDependency(binDirectory, "commons-daemon", "commons-daemon", "1.0.3", "jar", "commons-daemon.jar");
+        copyDependency(binDirectory, "org.apache.tomcat", "juli", "6.0.29", "jar", "tomcat-juli.jar");
+        copyDependency(binDirectory, "org.apache.tomcat", "bootstrap", "6.0.29", "jar", "bootstrap.jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "annotations-api", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "catalina", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "tribes", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "catalina-ha", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "el-api", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "jasper-jdt", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "jasper-el", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "jasper", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "jsp-api", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "servlet-api", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "coyote", "6.0.29", "jar");
+        copyDependency(libDirectory, "org.apache.tomcat", "dbcp", "6.0.29", "jar");
 
-		FileUtils.cleanDirectory(workingDirectory);
+        addCommercialPluginsIfSaasDemo();
+    }
 
-		FileUtils.forceMkdir(webappDirectory);
-		FileUtils.forceMkdir(libDirectory);
-		FileUtils.forceMkdir(configurationDirectory);
-		FileUtils.forceMkdir(binDirectory);
-	}
+    private void addCommercialPluginsIfSaasDemo() throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
+        if (isSaasTomcatDeployApplicationProfileActive()) {
+            copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0", "jar");
+            copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0", "jar");
+            copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0", "jar");
+            copyDependency(rootWebappDirectory, "com.qcadoo.saas", "qcadoo-saas-webapp", project.getVersion(), "war",
+                    "qcadoo-saas-webapp.war");
+        }
+    }
 
-	private void copyClassPathResource(final String resourceName)
-			throws IOException {
-		InputStreamFacade resource = new RawInputStreamFacade(
-				new ClassPathResource("/tomcat/" + resourceName)
-						.getInputStream());
-		FileUtils.copyStreamToFile(resource, new File(rootDirectory,
-				resourceName));
-	}
+    private void copyClassPathResources() throws IOException {
+        copyClassPathResource("LICENSE");
+        copyClassPathResource("bin/callRestart.bat");
+        copyClassPathResource("bin/catalina-tasks.xml");
+        copyClassPathResource("bin/catalina.sh");
+        copyClassPathResource("bin/catalina.bat");
+        copyClassPathResource("bin/cpappend.bat");
+        copyClassPathResource("bin/digest.bat");
+        copyClassPathResource("bin/digest.sh");
+        copyClassPathResource("bin/restart.bat");
+        copyClassPathResource("bin/restart.sh");
+        copyClassPathResource("bin/setclasspath.bat");
+        copyClassPathResource("bin/setclasspath.sh");
+        copyClassPathResource("bin/setenv.bat");
+        copyClassPathResource("bin/setenv.sh");
+        copyClassPathResource("bin/shutdown.bat");
+        copyClassPathResource("bin/shutdown.sh");
+        copyClassPathResource("bin/startup.bat");
+        copyClassPathResource("bin/startup.sh");
+        copyClassPathResource("bin/tool-wrapper.bat");
+        copyClassPathResource("bin/tool-wrapper.sh");
+        copyClassPathResource("bin/version.bat");
+        copyClassPathResource("bin/version.sh");
+        copyClassPathResource("conf/catalina.policy");
+        copyClassPathResource("conf/catalina.properties");
+        copyClassPathResource("conf/context.xml");
+        copyClassPathResource("conf/logging.properties");
+        copyClassPathResource("conf/server.xml");
+        copyClassPathResource("conf/tomcat-users.xml");
+        copyClassPathResource("conf/web.xml");
+        copyClassPathResource("logs/IGNOREME");
+        copyClassPathResource("temp/IGNOREME");
+        copyClassPathResource("work/IGNOREME");
+    }
 
-	private void copyDependency(final File target, final String groupId,
-			final String artifactId, final String version, final String type)
-			throws ArtifactResolutionException, ArtifactNotFoundException,
-			IOException {
-		copyDependency(target, groupId, artifactId, version, type, null);
-	}
+    private void prepareWorkingDirectory() throws IOException {
+        FileUtils.forceMkdir(workingDirectory);
 
-	private void copyDependency(final File target, final String groupId,
-			final String artifactId, final String version, final String type,
-			final String finalName) throws ArtifactResolutionException,
-			ArtifactNotFoundException, IOException {
-		Artifact artifact = artifactFactory.createArtifactWithClassifier(
-				groupId, artifactId, version, type, null);
-		resolver.resolve(artifact, remoteRepositories, localRepository);
-		FileUtils.copyFileToDirectory(artifact.getFile(), target);
-		if (finalName != null) {
-			FileUtils.rename(new File(target, artifact.getFile().getName()),
-					new File(target, finalName));
-		}
-	}
+        FileUtils.cleanDirectory(workingDirectory);
+
+        FileUtils.forceMkdir(webappDirectory);
+        FileUtils.forceMkdir(libDirectory);
+        FileUtils.forceMkdir(configurationDirectory);
+        FileUtils.forceMkdir(binDirectory);
+    }
+
+    private void copyClassPathResource(final String resourceName) throws IOException {
+        InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat/" + resourceName).getInputStream());
+        FileUtils.copyStreamToFile(resource, new File(rootDirectory, resourceName));
+    }
+
+    private void copyDependency(final File target, final String groupId, final String artifactId, final String version,
+            final String type) throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
+        copyDependency(target, groupId, artifactId, version, type, null);
+    }
+
+    private void copyDependency(final File target, final String groupId, final String artifactId, final String version,
+            final String type, final String finalName) throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
+        Artifact artifact = artifactFactory.createArtifactWithClassifier(groupId, artifactId, version, type, null);
+        resolver.resolve(artifact, remoteRepositories, localRepository);
+        FileUtils.copyFileToDirectory(artifact.getFile(), target);
+        if (finalName != null) {
+            FileUtils.rename(new File(target, artifact.getFile().getName()), new File(target, finalName));
+        }
+    }
 }
