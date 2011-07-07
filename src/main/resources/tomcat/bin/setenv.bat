@@ -2,7 +2,11 @@
 @REM ***************************************************************************
 @REM Copyright (c) 2010 Qcadoo Limited
 @REM Project: Qcadoo Framework
+<<<<<<< HEAD
 @REM Version: 0.4.3
+=======
+@REM Version: 0.4.2
+>>>>>>> 2344a489ca985e5813242a8704e3810007706390
 @REM
 @REM This file is part of Qcadoo.
 @REM
@@ -22,11 +26,11 @@
 @REM ***************************************************************************
 @REM
 
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_CONF=%CATALINA_HOME%/qcadoo"
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_RESTART_CMD=%CATALINA_HOME%/bin/restart.bat"
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_PATH=%CATALINA_HOME%/webapps/ROOT/WEB-INF/lib"
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_TMP_PATH=%CATALINA_HOME%/webapps/ROOT/tmp"
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_WEBAPP_PATH=%CATALINA_HOME%/webapps/ROOT"
-set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_LOG=%CATALINA_HOME%/logs"
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_CONF="%CATALINA_HOME%/qcadoo""
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_RESTART_CMD="%CATALINA_HOME%/bin/restart.bat""
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_PATH="%CATALINA_HOME%/webapps/ROOT/WEB-INF/lib""
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_TMP_PATH="%CATALINA_HOME%/webapps/ROOT/tmp""
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_WEBAPP_PATH="%CATALINA_HOME%/webapps/ROOT""
+set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_LOG="%CATALINA_HOME%/logs""
 set "JAVA_OPTS=%JAVA_OPTS% -Dspring.profiles.default=standalone"
 set "CATALINA_OPTS=%CATALINA_OPTS% -server -Djava.awt.headless=true"

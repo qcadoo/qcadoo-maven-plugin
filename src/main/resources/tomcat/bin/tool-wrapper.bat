@@ -2,7 +2,11 @@
 @REM ***************************************************************************
 @REM Copyright (c) 2010 Qcadoo Limited
 @REM Project: Qcadoo Framework
+<<<<<<< HEAD
 @REM Version: 0.4.3
+=======
+@REM Version: 0.4.2
+>>>>>>> 2344a489ca985e5813242a8704e3810007706390
 @REM
 @REM This file is part of Qcadoo.
 @REM

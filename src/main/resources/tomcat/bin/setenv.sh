@@ -2,7 +2,11 @@
 # ***************************************************************************
 # Copyright (c) 2010 Qcadoo Limited
 # Project: Qcadoo Framework
+<<<<<<< HEAD
 # Version: 0.4.3
+=======
+# Version: 0.4.2
+>>>>>>> 2344a489ca985e5813242a8704e3810007706390
 #
 # This file is part of Qcadoo.
 #
@@ -28,6 +32,6 @@ JAVA_OPTS="$JAVA_OPTS -DQCADOO_PLUGINS_PATH=$CATALINA_HOME/webapps/ROOT/WEB-INF/
 JAVA_OPTS="$JAVA_OPTS -DQCADOO_PLUGINS_TMP_PATH=$CATALINA_HOME/webapps/ROOT/tmp"
 JAVA_OPTS="$JAVA_OPTS -DQCADOO_WEBAPP_PATH=$CATALINA_HOME/webapps/ROOT"
 JAVA_OPTS="$JAVA_OPTS -DQCADOO_LOG=$CATALINA_HOME/logs"
-JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.default=standalone"
+JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.default=standalone -Xmx1024m -XX:MaxPermSize=256m"
 CATALINA_OPTS="$CATALINA_OPTS -server -Djava.awt.headless=true"
 CATALINA_PID="$CATALINA_HOME/catalina.pid"
