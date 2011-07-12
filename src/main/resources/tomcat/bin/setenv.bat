@@ -22,28 +22,6 @@
 @REM ***************************************************************************
 @REM
 
-=======
-@REM Version: 0.4.2
->>>>>>> 2344a489ca985e5813242a8704e3810007706390
-@REM
-@REM This file is part of Qcadoo.
-@REM
-@REM Qcadoo is free software; you can redistribute it and/or modify
-@REM it under the terms of the GNU Affero General Public License as published
-@REM by the Free Software Foundation; either version 3 of the License,
-@REM or (at your option) any later version.
-@REM
-@REM This program is distributed in the hope that it will be useful,
-@REM but WITHOUT ANY WARRANTY; without even the implied warranty
-@REM of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-@REM See the GNU Affero General Public License for more details.
-@REM
-@REM You should have received a copy of the GNU Affero General Public License
-@REM along with this program; if not, write to the Free Software
-@REM Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-@REM ***************************************************************************
-@REM
-
 set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_CONF="%CATALINA_HOME%/qcadoo""
 set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_RESTART_CMD="%CATALINA_HOME%/bin/restart.bat""
 set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_PATH="%CATALINA_HOME%/webapps/ROOT/WEB-INF/lib""
