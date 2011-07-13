@@ -35,7 +35,6 @@ public class PluginMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        // nothing to do
     }
 
 }

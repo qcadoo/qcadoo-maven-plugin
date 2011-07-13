@@ -140,8 +140,8 @@ public class ValidatorMojo extends AbstractMojo {
 
             factory.setNamespaceAware(true);
             factory.setValidating(true);
-            factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
 
+            factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
             DocumentBuilder parser = factory.newDocumentBuilder();
             parser.setErrorHandler(new ValidationErrorHandler());
             parser.parse(new File(file));
