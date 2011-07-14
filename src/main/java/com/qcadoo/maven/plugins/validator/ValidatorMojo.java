@@ -30,6 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -139,8 +142,21 @@ public class ValidatorMojo extends AbstractMojo {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
             factory.setNamespaceAware(true);
-            factory.setValidating(true);
 
+            try {
+                URL url = new URL("http://www.google.com");
+
+                HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
+
+                Object objData = urlConnect.getContent();
+                factory.setValidating(true);
+
+            } catch (UnknownHostException e) {
+                factory.setValidating(false);
+
+            } catch (IOException e) {
+                factory.setValidating(false);
+            }
             factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
             DocumentBuilder parser = factory.newDocumentBuilder();
             parser.setErrorHandler(new ValidationErrorHandler());
