@@ -150,6 +150,13 @@ public class TomcatMojo extends AbstractMojo {
     private File jdbcDriver;
 
     /**
+     * Files from this directory will be copied to the root directory
+     * of the binary distribution
+     * @parameter
+     */
+    private File rootFilesDirectory;
+
+    /**
      * @parameter expression="${project}"
      * @readonly
      */
@@ -179,6 +186,7 @@ public class TomcatMojo extends AbstractMojo {
             unpackWar();
             copyConfiguration();
             copyJdbcDriver();
+            copyRootFilesDirectory();
             copyDependencies();
             createArchive();
             registerArtifact();
@@ -281,6 +289,14 @@ public class TomcatMojo extends AbstractMojo {
         FileUtils.copyFileToDirectory(jdbcDriver, libDirectory);
     }
 
+    private void copyRootFilesDirectory() throws IOException {
+        if(rootFilesDirectory != null) {
+            for(File f : rootFilesDirectory.listFiles()) {
+                FileUtils.copyFileToDirectory(f, rootDirectory);
+            }
+        }
+    }
+
     private void copyConfiguration() throws IOException {
         FileUtils.copyDirectory(configuration, configurationDirectory);
     }
@@ -360,7 +376,7 @@ public class TomcatMojo extends AbstractMojo {
         FileUtils.forceMkdir(configurationDirectory);
         FileUtils.forceMkdir(binDirectory);
     }
-
+    
     private void copyClassPathResource(final String resourceName) throws IOException {
         InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat/" + resourceName).getInputStream());
         FileUtils.copyStreamToFile(resource, new File(rootDirectory, resourceName));
