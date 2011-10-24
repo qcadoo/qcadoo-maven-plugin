@@ -4,7 +4,7 @@
 
 	<groupId>com.qcadoo</groupId>
 	<artifactId>qcadoo-maven-plugin</artifactId>
-	<version>0.4.9-SNAPSHOT</version>
+	<version>0.4.9</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Qcadoo Framework :: Maven Plugin</name>
