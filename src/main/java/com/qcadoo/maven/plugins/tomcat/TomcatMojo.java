@@ -90,12 +90,6 @@ public class TomcatMojo extends AbstractMojo {
     private File rootDirectory;
 
     /**
-     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps"
-     * @readonly
-     */
-    private File rootWebappDirectory;
-
-    /**
      * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
      * @readonly
      */
@@ -326,8 +320,6 @@ public class TomcatMojo extends AbstractMojo {
             copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-commons", "1.0.0", "jar");
             copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-enova", "1.0.0", "jar");
             copyDependency(webappLibDirectory, "com.qcadoo.mes", "mes-commercial-plugins-integration-subiekt", "1.0.0", "jar");
-            copyDependency(rootWebappDirectory, "com.qcadoo.saas", "qcadoo-saas-webapp", project.getVersion(), "war",
-                    "qcadoo-saas-webapp.war");
         }
     }
 
