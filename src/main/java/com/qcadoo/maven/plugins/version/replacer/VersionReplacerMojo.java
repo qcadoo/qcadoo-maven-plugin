@@ -63,4 +63,8 @@ public class VersionReplacerMojo extends AbstractMojo {
         project.getProperties().setProperty("version.replacer", trimmedVersion);
     }
 
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
 }

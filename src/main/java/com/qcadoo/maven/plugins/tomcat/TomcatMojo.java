@@ -56,6 +56,12 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class TomcatMojo extends AbstractMojo {
 
+    private static final String TOMCAT_LIB_PACKAGE = "org.apache.tomcat";
+
+    private static final String TOMCAT_LIB_VERSION = "6.0.29";
+
+    private static final String JAR_EXTENSION = "jar";
+
     /**
      * @component
      */
@@ -272,21 +278,21 @@ public class TomcatMojo extends AbstractMojo {
     }
 
     private void copyDependencies() throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
-        copyDependency(binDirectory, "commons-daemon", "commons-daemon", "1.0.3", "jar", "commons-daemon.jar");
-        copyDependency(binDirectory, "org.apache.tomcat", "juli", "6.0.29", "jar", "tomcat-juli.jar");
-        copyDependency(binDirectory, "org.apache.tomcat", "bootstrap", "6.0.29", "jar", "bootstrap.jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "annotations-api", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "catalina", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "tribes", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "catalina-ha", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "el-api", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "jasper-jdt", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "jasper-el", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "jasper", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "jsp-api", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "servlet-api", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "coyote", "6.0.29", "jar");
-        copyDependency(libDirectory, "org.apache.tomcat", "dbcp", "6.0.29", "jar");
+        copyDependency(binDirectory, "commons-daemon", "commons-daemon", "1.0.3", JAR_EXTENSION, "commons-daemon.jar");
+        copyDependency(binDirectory, TOMCAT_LIB_PACKAGE, "juli", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-juli.jar");
+        copyDependency(binDirectory, TOMCAT_LIB_PACKAGE, "bootstrap", TOMCAT_LIB_VERSION, JAR_EXTENSION, "bootstrap.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "annotations-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "catalina", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tribes", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "catalina-ha", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "el-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper-jdt", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper-el", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jsp-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "servlet-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "coyote", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "dbcp", TOMCAT_LIB_VERSION, JAR_EXTENSION);
     }
 
     private void copyClassPathResources() throws IOException {

@@ -211,13 +211,14 @@ public class ValidatorMojo extends AbstractMojo {
             in = new FileInputStream(file);
             isr = new InputStreamReader(in);
             data = new BufferedReader(isr);
-            String line = null;
+            String line = data.readLine();
 
-            while ((line = data.readLine()) != null) {
+            while (line != null) {
                 if (line.contains(re)) {
                     throw new MojoFailureException("File: " + file
                             + " contains a com.qcadoo.mes.internal import which is not permitted. Please use the API instead.");
                 }
+                line = data.readLine();
             }
 
         } catch (FileNotFoundException e) {
@@ -229,5 +230,17 @@ public class ValidatorMojo extends AbstractMojo {
             IOUtils.closeQuietly(isr);
             IOUtils.closeQuietly(data);
         }
+    }
+
+    public void setJavaSourcePath(String javaSourcePath) {
+        this.javaSourcePath = javaSourcePath;
+    }
+
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+    }
+
+    public void setBasedir(String basedir) {
+        this.basedir = basedir;
     }
 }

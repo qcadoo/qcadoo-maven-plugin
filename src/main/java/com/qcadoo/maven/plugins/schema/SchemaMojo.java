@@ -131,10 +131,10 @@ public class SchemaMojo extends AbstractMojo {
 
     private File prepareDestinationFile(final File file, final String version, final boolean ignoreWithoutVersion,
             final File targetDirectory) {
-        if (!ignoreWithoutVersion) {
-            return new File(targetDirectory, file.getName());
-        } else {
+        if (ignoreWithoutVersion) {
             return new File(targetDirectory, file.getName().replaceAll(".xsd", "") + "-" + version + ".xsd");
+        } else {
+            return new File(targetDirectory, file.getName());
         }
     }
 
