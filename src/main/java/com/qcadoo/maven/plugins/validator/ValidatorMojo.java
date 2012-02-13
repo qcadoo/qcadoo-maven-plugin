@@ -232,15 +232,15 @@ public class ValidatorMojo extends AbstractMojo {
         }
     }
 
-    public void setJavaSourcePath(String javaSourcePath) {
+    public void setJavaSourcePath(final String javaSourcePath) {
         this.javaSourcePath = javaSourcePath;
     }
 
-    public void setResourcePath(String resourcePath) {
+    public void setResourcePath(final String resourcePath) {
         this.resourcePath = resourcePath;
     }
 
-    public void setBasedir(String basedir) {
+    public void setBasedir(final String basedir) {
         this.basedir = basedir;
     }
 }
