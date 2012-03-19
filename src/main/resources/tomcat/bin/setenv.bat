@@ -29,4 +29,5 @@ set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_PLUGINS_TMP_PATH="%CATALINA_HOME%/webapps/RO
 set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_WEBAPP_PATH="%CATALINA_HOME%/webapps/ROOT""
 set "JAVA_OPTS=%JAVA_OPTS% -DQCADOO_LOG="%CATALINA_HOME%/logs""
 set "JAVA_OPTS=%JAVA_OPTS% -Dspring.profiles.default=standalone -XX:MaxPermSize=256m"
+set "JAVA_OPTS=%JAVA_OPTS% -javaagent:%CATALINA_HOME%/lib/aspectjweaver-1.6.12.jar"
 set "CATALINA_OPTS=%CATALINA_OPTS% -server -Djava.awt.headless=true"

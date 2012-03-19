@@ -144,6 +144,12 @@ public class TomcatMojo extends AbstractMojo {
     private File jdbcDriver;
 
     /**
+     * @parameter
+     * @required
+     */
+    private File aspectJWeaver;
+
+    /**
      * Files from this directory will be copied to the root directory of the binary distribution
      * 
      * @parameter
@@ -180,6 +186,7 @@ public class TomcatMojo extends AbstractMojo {
             unpackWar();
             copyConfiguration();
             copyJdbcDriver();
+            copyAspectJWeaver();
             copyRootFilesDirectory();
             copyDependencies();
             createArchive();
@@ -263,6 +270,10 @@ public class TomcatMojo extends AbstractMojo {
 
     private void copyJdbcDriver() throws IOException {
         FileUtils.copyFileToDirectory(jdbcDriver, libDirectory);
+    }
+
+    private void copyAspectJWeaver() throws IOException {
+        FileUtils.copyFileToDirectory(aspectJWeaver, libDirectory);
     }
 
     private void copyRootFilesDirectory() throws IOException {
