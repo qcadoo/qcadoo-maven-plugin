@@ -80,9 +80,12 @@ public class ValidatorMojo extends AbstractMojo {
      */
     private String basedir;
 
-    private final String[] forbiddenPackages = new String[] { "com.qcadoo.model.internal.", "com.qcadoo.view.internal.",
-            "com.qcadoo.localization.internal.", "com.qcadoo.plugin.internal.", "com.qcadoo.report.internal.",
-            "com.qcadoo.security.internal." };
+    private final String[] forbiddenPackages = new String[] { "com.qcadoo.customTranslation.internal.",
+            "com.qcadoo.localization.internal.", "com.qcadoo.mail.internal.", "com.qcadoo.model.internal.",
+            "com.qcadoo.plugin.internal.", "com.qcadoo.report.internal.", "com.qcadoo.security.internal.",
+            "com.qcadoo.tenant.internal.", "com.qcadoo.view.internal.", "com.qcadoo.plugins.customTranslations.internal.",
+            "com.qcadoo.plugins.dictionaries.internal.", "com.qcadoo.plugins.qcadooExport.internal.",
+            "com.qcadoo.plugins.menu.internal.", "com.qcadoo.plugins.plugins.internal.", "com.qcadoo.plugins.users.internal." };
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
