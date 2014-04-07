@@ -69,6 +69,12 @@ public class SchemaMojo extends AbstractMojo {
     private File commonWorkingDirectory;
 
     /**
+     * @parameter expression="${basedir}/target/schema/view/components"
+     * @readonly
+     */
+    private File viewComponentsWorkingDirectory;
+
+    /**
      * @parameter expression="${basedir}/target/${project.artifactId}.zip"
      * @readonly
      */
@@ -95,29 +101,14 @@ public class SchemaMojo extends AbstractMojo {
 
             String version = prepareVersion();
 
-            for (File file : (Collection<File>) FileUtils
-                    .getFiles(baseDirectory, "*/src/main/resources/com/qcadoo/*/*.xsd", null)) {
-                FileUtils.copyFile(file, prepareDestinationFile(file, version, false, workingDirectory));
-                if (!ignoreWithoutVersion) {
-                    FileUtils.copyFile(file, prepareDestinationFile(file, version, true, workingDirectory));
-                }
-            }
-
-            for (File file : (Collection<File>) FileUtils.getFiles(baseDirectory,
-                    "*/src/main/resources/com/qcadoo/*/modules/*.xsd", null)) {
-                FileUtils.copyFile(file, prepareDestinationFile(file, version, false, modulesWorkingDirectory));
-                if (!ignoreWithoutVersion) {
-                    FileUtils.copyFile(file, prepareDestinationFile(file, version, true, modulesWorkingDirectory));
-                }
-            }
-
-            for (File file : (Collection<File>) FileUtils.getFiles(baseDirectory,
-                    "*/src/main/resources/com/qcadoo/*/common/*.xsd", null)) {
-                FileUtils.copyFile(file, prepareDestinationFile(file, version, false, commonWorkingDirectory));
-                if (!ignoreWithoutVersion) {
-                    FileUtils.copyFile(file, prepareDestinationFile(file, version, true, commonWorkingDirectory));
-                }
-            }
+            copySchemaFiles(ignoreWithoutVersion, version, "*/src/main/resources/com/qcadoo/*/*.xsd", workingDirectory);
+            copySchemaFiles(ignoreWithoutVersion, version, "*/src/main/resources/com/qcadoo/*/modules/*.xsd",
+                    modulesWorkingDirectory);
+            copySchemaFiles(ignoreWithoutVersion, version, "*/src/main/resources/com/qcadoo/*/common/*.xsd",
+                    commonWorkingDirectory);
+            // Temporary
+            copySchemaFiles(ignoreWithoutVersion, version, "*/src/main/resources/com/qcadoo/view/view/components/*.xsd",
+                    viewComponentsWorkingDirectory);
 
             createArchive();
             registerArtifact();
@@ -126,6 +117,16 @@ public class SchemaMojo extends AbstractMojo {
             throw new MojoExecutionException("Exception while creating zip", e);
         } catch (IOException e) {
             throw new MojoExecutionException("Exception while creating zip", e);
+        }
+    }
+
+    private void copySchemaFiles(final boolean ignoreWithoutVersion, final String version, final String includePath,
+            final File targetDirectory) throws IOException {
+        for (File file : (Collection<File>) FileUtils.getFiles(baseDirectory, includePath, null)) {
+            FileUtils.copyFile(file, prepareDestinationFile(file, version, false, targetDirectory));
+            if (!ignoreWithoutVersion) {
+                FileUtils.copyFile(file, prepareDestinationFile(file, version, true, targetDirectory));
+            }
         }
     }
 
