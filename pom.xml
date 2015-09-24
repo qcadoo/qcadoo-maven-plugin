@@ -10,7 +10,7 @@
 
 	<groupId>com.qcadoo</groupId>
 	<artifactId>qcadoo-maven-plugin</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.5-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Qcadoo Framework :: Maven Plugin</name>
@@ -115,6 +115,7 @@
 		<connection>scm:git:git://github.com/qcadoo/qcadoo-maven-plugin.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/qcadoo/qcadoo-maven-plugin.git</developerConnection> 
 		<url>https://github.com/qcadoo/qcadoo-maven-plugin</url>
-	</scm>
+	  <tag>HEAD</tag>
+  </scm>
 
 </project>
