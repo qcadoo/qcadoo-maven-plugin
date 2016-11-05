@@ -84,49 +84,49 @@ public class TomcatMojo extends AbstractMojo {
     private java.util.List remoteRepositories;
 
     /**
-     * @parameter expression="${basedir}/target/tomcat-archiver/"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/"
      * @readonly
      */
     private File workingDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/tomcat-archiver/${project.artifactId}"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/${project.artifactId}"
      * @readonly
      */
     private File rootDirectory;
 
     /**
-     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/${project.artifactId}/webapps/ROOT"
      * @readonly
      */
     private File webappDirectory;
 
     /**
-     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/lib/"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/${project.artifactId}/lib/"
      * @readonly
      */
     private File libDirectory;
 
     /**
-     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/${project.artifactId}/bin/"
      * @readonly
      */
     private File binDirectory;
 
     /**
-     * @parameter expression= "${basedir}/target/tomcat-archiver/${project.artifactId}/qcadoo/"
+     * @parameter default-value="${basedir}/target/tomcat-archiver/${project.artifactId}/qcadoo/"
      * @readonly
      */
     private File configurationDirectory;
 
     /**
-     * @parameter expression="${tomcat.target}" default-value="${basedir}/target/${project.artifactId}.zip"
+     * @parameter default-value="${tomcat.target}" default-value="${basedir}/target/${project.artifactId}.zip"
      * @readonly
      */
     private File target;
 
     /**
-     * @parameter expression="${tomcat.source}" expression= "${basedir}/target/${project.artifactId}-${project.version}.war"
+     * @parameter default-value="${tomcat.source}" default-value="${basedir}/target/${project.artifactId}-${project.version}.war"
      * @readonly
      */
     private File source;
@@ -157,7 +157,7 @@ public class TomcatMojo extends AbstractMojo {
     private File rootFilesDirectory;
 
     /**
-     * @parameter expression="${project}"
+     * @parameter default-value="${project}"
      * @readonly
      */
     private MavenProject project;

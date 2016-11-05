@@ -60,14 +60,14 @@ import org.xml.sax.SAXException;
 public class ValidatorMojo extends AbstractMojo {
 
     /**
-     * @parameter expression="${validate.javaSourcePath}" default-value="/src/main/java/"
+     * @parameter default-value="${validate.javaSourcePath}" default-value="/src/main/java/"
      * @required
      * @readonly
      */
     private String javaSourcePath;
 
     /**
-     * @parameter expression="${validate.viewXmlPath}" default-value="/target/classes/"
+     * @parameter default-value="${validate.viewXmlPath}" default-value="/target/classes/"
      * @required
      * @readonly
      */

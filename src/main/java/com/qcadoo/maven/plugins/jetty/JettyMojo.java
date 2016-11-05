@@ -96,38 +96,38 @@ public class JettyMojo extends JettyRunMojo {
     private String restartCommand;
 
     /**
-     * @parameter expression="${project}"
+     * @parameter default-value="${project}"
      * @readonly
      */
     private MavenProject _project;
 
     /**
-     * @parameter expression="${maven.war.webxml}"
+     * @parameter default-value="${maven.war.webxml}"
      * @readonly
      */
     private String _webXml;
 
     /**
-     * @parameter expression="${project.build.outputDirectory}"
+     * @parameter default-value="${project.build.outputDirectory}"
      * @required
      */
     private File _classesDirectory;
 
     /**
-     * @parameter expression="${maven.war.src}"
+     * @parameter default-value="${maven.war.src}"
      * @readonly
      */
     private File _webAppSourceDirectory;
 
     /**
-     * @parameter expression="${plugin.artifacts}"
+     * @parameter default-value="${plugin.artifacts}"
      * @readonly
      */
     @SuppressWarnings("rawtypes")
     private List _pluginArtifacts;
 
     /**
-     * @parameter expression="${project.build.directory}/tmp"
+     * @parameter default-value="${project.build.directory}/tmp"
      * @readonly
      */
     private File _tmpDirectory;

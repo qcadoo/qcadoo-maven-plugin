@@ -45,43 +45,43 @@ import org.codehaus.plexus.util.FileUtils;
 public class SchemaMojo extends AbstractMojo {
 
     /**
-     * @parameter expression="${basedir}/../"
+     * @parameter default-value="${basedir}/../"
      * @readonly
      */
     private File baseDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/schema/"
+     * @parameter default-value="${basedir}/target/schema/"
      * @readonly
      */
     private File workingDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/schema/modules"
+     * @parameter default-value="${basedir}/target/schema/modules"
      * @readonly
      */
     private File modulesWorkingDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/schema/common"
+     * @parameter default-value="${basedir}/target/schema/common"
      * @readonly
      */
     private File commonWorkingDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/schema/view/components"
+     * @parameter default-value="${basedir}/target/schema/view/components"
      * @readonly
      */
     private File viewComponentsWorkingDirectory;
 
     /**
-     * @parameter expression="${basedir}/target/${project.artifactId}.zip"
+     * @parameter default-value="${basedir}/target/${project.artifactId}.zip"
      * @readonly
      */
     private File target;
 
     /**
-     * @parameter expression="${project}"
+     * @parameter default-value="${project}"
      * @readonly
      */
     private MavenProject project;

@@ -41,7 +41,7 @@ public class VersionReplacerMojo extends AbstractMojo {
 
     /**
      * 
-     * @parameter expression="${project}"
+     * @parameter default-value="${project}"
      * @required
      * @readonly
      * 
