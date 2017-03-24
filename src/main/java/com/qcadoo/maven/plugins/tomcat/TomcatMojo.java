@@ -23,17 +23,12 @@
  */
 package com.qcadoo.maven.plugins.tomcat;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.model.Profile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -58,7 +53,7 @@ public class TomcatMojo extends AbstractMojo {
 
     private static final String TOMCAT_LIB_PACKAGE = "org.apache.tomcat";
 
-    private static final String TOMCAT_LIB_VERSION = "6.0.29";
+    private static final String TOMCAT_LIB_VERSION = "8.5.12"; //9.0.0.M18
 
     private static final String JAR_EXTENSION = "jar";
 
@@ -178,11 +173,6 @@ public class TomcatMojo extends AbstractMojo {
             prepareWorkingDirectory();
             copyClassPathResources();
 
-            if (isSaasProfileActive()) {
-                updateSetenvShForSaas();
-                updateSetenvBatForSaas();
-            }
-
             unpackWar();
             copyConfiguration();
             copyJdbcDriver();
@@ -204,38 +194,6 @@ public class TomcatMojo extends AbstractMojo {
         } catch (IOException e) {
             throw new MojoExecutionException("Exception while creating zip", e);
         }
-    }
-
-    private void updateSetenvBatForSaas() throws IOException {
-        BufferedWriter writer = null;
-
-        try {
-            writer = new BufferedWriter(new FileWriter(new File(rootDirectory, "bin/setenv.bat"), true));
-            writer.append("set \"JAVA_OPTS=%JAVA_OPTS% -Dspring.profiles.active=saas\"\n");
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-    }
-
-    private void updateSetenvShForSaas() throws IOException {
-        BufferedWriter writer = null;
-
-        try {
-            writer = new BufferedWriter(new FileWriter(new File(rootDirectory, "bin/setenv.sh"), true));
-            writer.append("JAVA_OPTS=\"$JAVA_OPTS -Dspring.profiles.active=saas\"\n");
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean isSaasProfileActive() {
-        for (Profile profile : ((List<Profile>) project.getActiveProfiles())) {
-            if ("saas".equals(profile.getId())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void registerArtifact() {
@@ -289,34 +247,43 @@ public class TomcatMojo extends AbstractMojo {
     }
 
     private void copyDependencies() throws ArtifactResolutionException, ArtifactNotFoundException, IOException {
-        copyDependency(binDirectory, "commons-daemon", "commons-daemon", "1.0.3", JAR_EXTENSION, "commons-daemon.jar");
-        copyDependency(binDirectory, TOMCAT_LIB_PACKAGE, "juli", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-juli.jar");
+        copyDependency(binDirectory, "commons-daemon", "commons-daemon", "1.0.15", JAR_EXTENSION, "commons-daemon.jar");
+        copyDependency(binDirectory, TOMCAT_LIB_PACKAGE, "tomcat-juli", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-juli.jar");
         copyDependency(binDirectory, TOMCAT_LIB_PACKAGE, "bootstrap", TOMCAT_LIB_VERSION, JAR_EXTENSION, "bootstrap.jar");
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "annotations-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "catalina", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tribes", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "catalina-ha", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "el-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper-jdt", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper-el", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jasper", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "jsp-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "servlet-api", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "coyote", TOMCAT_LIB_VERSION, JAR_EXTENSION);
-        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "dbcp", TOMCAT_LIB_VERSION, JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-annotations-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "annotations-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-catalina", TOMCAT_LIB_VERSION, JAR_EXTENSION, "catalina.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-catalina-ant", TOMCAT_LIB_VERSION, JAR_EXTENSION, "catalina-ant.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-catalina-ha", TOMCAT_LIB_VERSION, JAR_EXTENSION, "catalina-ha.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-storeconfig", TOMCAT_LIB_VERSION, JAR_EXTENSION, "catalina-storeconfig.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-tribes", TOMCAT_LIB_VERSION, JAR_EXTENSION, "catalina-tribes.jar");
+        copyDependency(libDirectory, "org.eclipse.jdt.core.compiler", "ecj", "4.6.1", JAR_EXTENSION);
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-el-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "el-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jasper", TOMCAT_LIB_VERSION, JAR_EXTENSION, "jasper.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jasper-el", TOMCAT_LIB_VERSION, JAR_EXTENSION, "jasper-el.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jaspic-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "jaspic-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jsp-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "jsp-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-servlet-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "servlet-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-api.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-coyote", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-coyote.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-dbcp", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-dbcp.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jdbc", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-jdbc.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-jni", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-jni.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-util", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-util.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-util-scan", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-util-scan.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-websocket", TOMCAT_LIB_VERSION, JAR_EXTENSION, "tomcat-websocket.jar");
+        copyDependency(libDirectory, TOMCAT_LIB_PACKAGE, "tomcat-websocket-api", TOMCAT_LIB_VERSION, JAR_EXTENSION, "websocket-api.jar");
     }
 
     private void copyClassPathResources() throws IOException {
         copyClassPathResource("LICENSE");
-        copyClassPathResource("bin/callRestart.bat");
         copyClassPathResource("bin/catalina-tasks.xml");
         copyClassPathResource("bin/catalina.sh");
         copyClassPathResource("bin/catalina.bat");
-        copyClassPathResource("bin/cpappend.bat");
+        copyClassPathResource("bin/configtest.sh");
+        copyClassPathResource("bin/configtest.bat");
+        copyClassPathResource("bin/daemon.sh");
         copyClassPathResource("bin/digest.bat");
         copyClassPathResource("bin/digest.sh");
-        copyClassPathResource("bin/restart.bat");
-        copyClassPathResource("bin/restart.sh");
         copyClassPathResource("bin/setclasspath.bat");
         copyClassPathResource("bin/setclasspath.sh");
         copyClassPathResource("bin/setenv.bat");
@@ -335,6 +302,9 @@ public class TomcatMojo extends AbstractMojo {
         copyClassPathResource("conf/logging.properties");
         copyClassPathResource("conf/server.xml");
         copyClassPathResource("conf/tomcat-users.xml");
+        copyClassPathResource("conf/tomcat-users.xsd");
+        copyClassPathResource("conf/jaspic-providers.xml");
+        copyClassPathResource("conf/jaspic-providers.xsd");
         copyClassPathResource("conf/web.xml");
         copyClassPathResource("logs/IGNOREME");
         copyClassPathResource("temp/IGNOREME");
@@ -353,7 +323,7 @@ public class TomcatMojo extends AbstractMojo {
     }
 
     private void copyClassPathResource(final String resourceName) throws IOException {
-        InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat/" + resourceName).getInputStream());
+        InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat8/" + resourceName).getInputStream()); //tomcat9
         FileUtils.copyStreamToFile(resource, new File(rootDirectory, resourceName));
     }
 
