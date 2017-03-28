@@ -53,7 +53,7 @@ public class TomcatMojo extends AbstractMojo {
 
     private static final String TOMCAT_LIB_PACKAGE = "org.apache.tomcat";
 
-    private static final String TOMCAT_LIB_VERSION = "8.5.12"; //9.0.0.M18
+    private static final String TOMCAT_LIB_VERSION = "8.5.12";
 
     private static final String JAR_EXTENSION = "jar";
 
@@ -323,7 +323,7 @@ public class TomcatMojo extends AbstractMojo {
     }
 
     private void copyClassPathResource(final String resourceName) throws IOException {
-        InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat8/" + resourceName).getInputStream()); //tomcat9
+        InputStreamFacade resource = new RawInputStreamFacade(new ClassPathResource("/tomcat/" + resourceName).getInputStream());
         FileUtils.copyStreamToFile(resource, new File(rootDirectory, resourceName));
     }
 
